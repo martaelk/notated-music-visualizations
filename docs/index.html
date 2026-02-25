@@ -4,7 +4,7 @@
   <meta charset="utf-8" />
   <title>Latvia National Bibliography – Notated Music</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Interactive visualizations developed as part of a Master’s thesis (Notated Music metadata, National Library of Latvia)." />
+  <meta name="description" content="Interactive visualizations developed as part of a Master’s thesis using National Library of Latvia notated music metadata." />
 
   <style>
     :root{
@@ -15,15 +15,14 @@
       --muted: #374151;
       --muted2: #6b7280;
       --border: #d1d5db;
-      --accent: #2563eb;   /* academic blue */
-      --accent2: #0f172a;  /* deep slate for headings */
+      --accent: #2563eb;
+      --accent2: #0f172a;
       --shadow: 0 8px 24px rgba(0,0,0,0.08);
       --radius: 16px;
       --radius2: 14px;
     }
 
     * { box-sizing: border-box; }
-
     body{
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
@@ -32,7 +31,6 @@
       min-height: 100vh;
       line-height: 1.55;
     }
-
     a{ color: inherit; text-decoration: none; }
     a:focus-visible{
       outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
@@ -40,13 +38,8 @@
       border-radius: 12px;
     }
 
-    .wrap{
-      max-width: 1100px;
-      margin: 0 auto;
-      padding: 40px 20px 60px;
-    }
+    .wrap{ max-width: 1140px; margin: 0 auto; padding: 40px 20px 60px; }
 
-    /* Header / hero */
     header{
       position: relative;
       border-radius: var(--radius);
@@ -56,12 +49,11 @@
       padding: 22px 24px 20px;
       overflow: hidden;
     }
-
     header:before{
       content:"";
       position:absolute;
       inset:-80px -120px auto auto;
-      width: 360px; height: 360px;
+      width: 380px; height: 380px;
       background: radial-gradient(circle at 30% 30%, rgba(37,99,235,0.14), transparent 62%);
       transform: rotate(10deg);
       pointer-events:none;
@@ -69,106 +61,100 @@
     }
 
     .topline{
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-      gap: 12px;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
+      display:flex; align-items:center; justify-content:space-between;
+      gap: 12px; flex-wrap: wrap; position: relative; z-index: 1;
     }
-
     .badge{
-      display:inline-flex;
-      align-items:center;
-      gap: 8px;
-      font-size: 13px;
-      color: var(--muted);
-      padding: 7px 11px;
-      border-radius: 999px;
+      display:inline-flex; align-items:center; gap: 8px;
+      font-size: 13px; color: var(--muted);
+      padding: 7px 11px; border-radius: 999px;
       border: 1px solid var(--border);
       background: var(--panel-2);
       white-space: nowrap;
     }
-
     h1{
       margin: 14px 0 8px;
       font-size: clamp(28px, 3.6vw, 42px);
       letter-spacing: -0.02em;
       color: var(--accent2);
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
     }
-
     .subtitle{
       margin: 0;
       color: var(--muted);
-      max-width: 80ch;
+      max-width: 90ch;
       font-size: 15.5px;
-      position: relative;
-      z-index: 1;
+      position: relative; z-index: 1;
     }
-
-    .hint{
-      color: var(--muted2);
-      font-size: 13px;
-      margin: 10px 0 0;
-      position: relative;
-      z-index: 1;
-    }
+    .hint{ color: var(--muted2); font-size: 13px; margin: 10px 0 0; position: relative; z-index: 1; }
 
     .actions{
       margin-top: 16px;
-      display:flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      position: relative;
-      z-index: 1;
+      display:flex; gap: 10px; flex-wrap: wrap;
+      position: relative; z-index: 1;
     }
-
     .btn{
-      display:inline-flex;
-      align-items:center;
-      gap: 10px;
+      display:inline-flex; align-items:center; gap: 10px;
       padding: 10px 14px;
       border-radius: 12px;
       border: 1px solid var(--border);
       background: var(--panel);
       color: var(--text);
-      font-weight: 650;
-      font-size: 14px;
+      font-weight: 650; font-size: 14px;
       box-shadow: 0 1px 0 rgba(0,0,0,0.02);
-      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
+      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
     }
-
     .btn:hover{
       transform: translateY(-1px);
       border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
       box-shadow: 0 10px 18px rgba(0,0,0,0.06);
     }
-
     .btn.primary{
       background: var(--accent);
-      color: #ffffff;
+      color: #fff;
       border-color: color-mix(in srgb, var(--accent) 75%, #000 0%);
     }
+    .btn small{ color: color-mix(in srgb, currentColor 72%, transparent); font-weight: 600; }
 
-    .btn.primary:hover{
-      box-shadow: 0 12px 22px rgba(37,99,235,0.18);
+    .toolbar{
+      margin-top: 16px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+      position: relative; z-index: 1;
+    }
+    .search{
+      flex: 1 1 320px;
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: #fff;
+    }
+    .search input{
+      width: 100%;
+      border: 0;
+      outline: none;
+      font-size: 14px;
+      color: var(--text);
+      background: transparent;
+    }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--panel-2);
     }
 
-    .btn small{
-      color: color-mix(in srgb, currentColor 72%, transparent);
-      font-weight: 600;
-    }
-
-    /* Sections */
-    .grid{
-      margin-top: 18px;
-      display:grid;
-      grid-template-columns: repeat(12, 1fr);
-      gap: 14px;
-    }
+    .grid{ margin-top: 16px; display:grid; grid-template-columns: repeat(12, 1fr); gap: 14px; }
 
     .section{
       grid-column: span 12;
@@ -176,50 +162,63 @@
       background: var(--panel);
       box-shadow: 0 6px 18px rgba(0,0,0,0.05);
       border-radius: var(--radius);
-      padding: 18px;
+      padding: 16px;
     }
 
-    .section-header{
+    details{
+      border-radius: 14px;
+      border: 1px solid var(--border);
+      background: #fff;
+      padding: 12px 12px;
+    }
+    details + details{ margin-top: 10px; }
+    summary{
+      cursor: pointer;
+      list-style: none;
       display:flex;
       align-items: baseline;
       justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 12px;
-    }
-
-    h2{
-      margin: 0;
-      font-size: 18px;
-      letter-spacing: -0.01em;
+      gap: 12px;
+      font-weight: 750;
       color: var(--accent2);
+      padding: 6px 6px;
+    }
+    summary::-webkit-details-marker{ display:none; }
+    .summary-right{
+      color: var(--muted2);
+      font-weight: 600;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+    .group-desc{
+      margin: 4px 6px 10px;
+      color: var(--muted);
+      font-size: 13.5px;
+      max-width: 95ch;
     }
 
     .cards{
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 12px;
+      padding: 6px;
     }
-
     .card{
       position: relative;
       grid-column: span 12;
-      padding: 14px 14px 14px;
+      padding: 14px;
       border-radius: var(--radius2);
-      background: linear-gradient(180deg, #ffffff, #ffffff);
       border: 1px solid var(--border);
       box-shadow: 0 4px 14px rgba(0,0,0,0.04);
       transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
       overflow: hidden;
+      background: #fff;
     }
-
     .card:hover{
       transform: translateY(-2px);
       border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
       box-shadow: 0 12px 22px rgba(0,0,0,0.08);
     }
-
-    /* subtle clickable cue */
     .card::after{
       content:"→";
       position:absolute;
@@ -228,66 +227,31 @@
       color: var(--muted2);
       font-size: 16px;
     }
-
-    .title-row{
-      display:flex;
-      gap: 10px;
-      align-items: center;
-      margin-bottom: 6px;
-      padding-right: 18px; /* room for arrow */
-    }
-
+    .title-row{ display:flex; gap: 10px; align-items: center; margin-bottom: 6px; padding-right: 18px; }
     .icon{
-      width: 34px;
-      height: 34px;
+      width: 34px; height: 34px;
       border-radius: 12px;
-      display:grid;
-      place-items:center;
+      display:grid; place-items:center;
       border: 1px solid var(--border);
       background: var(--panel-2);
       flex: 0 0 auto;
       opacity: 0.9;
     }
+    .card-title{ margin: 0; font-weight: 750; font-size: 15px; color: var(--accent2); letter-spacing: -0.01em; }
+    .desc{ margin: 0; color: var(--muted); font-size: 13.5px; }
 
-    .card-title{
-      margin: 0;
-      font-weight: 750;
-      letter-spacing: -0.01em;
-      font-size: 15px;
-      color: var(--accent2);
-    }
-
-    .desc{
-      margin: 0;
-      color: var(--muted);
-      font-size: 13.5px;
-      max-width: 80ch;
-    }
-
-    /* Layout breakpoints */
-    @media (min-width: 720px){
-      .section{ padding: 20px; }
-      .card{ grid-column: span 6; }
-    }
-
-    @media (min-width: 980px){
-      .card{ grid-column: span 4; }
-    }
+    @media (min-width: 720px){ .card{ grid-column: span 6; } }
+    @media (min-width: 980px){ .card{ grid-column: span 4; } }
 
     footer{
-      margin-top: 18px;
-      color: var(--muted2);
-      font-size: 13px;
-      padding: 10px 2px 0;
+      margin-top: 18px; color: var(--muted2); font-size: 13px; padding: 10px 2px 0;
     }
-
     footer a{
       color: var(--muted);
       text-decoration: underline;
       text-underline-offset: 3px;
       text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
     }
-
     .sep{ opacity: 0.6; margin: 0 8px; }
 
     @media (prefers-reduced-motion: reduce){
@@ -302,147 +266,300 @@
     <header>
       <div class="topline">
         <div class="badge">🎼 Latvia National Bibliography <span class="sep">•</span> Notated Music</div>
-        <div class="badge">GitHub Pages showcase</div>
+        <div class="badge">Master’s thesis companion</div>
       </div>
 
       <h1>Interactive visualizations</h1>
 
       <p class="subtitle">
         This page presents interactive visualizations developed as part of the Master’s thesis
-        <strong>“Visualising Notated Music Metadata from the Latvian National Bibliography”</strong>,
-        conducted within the RTU Digital Humanities programme (RHMDB).
-        The visualizations are based on bibliographic metadata from the National Library of Latvia
-        and are intended to support exploratory analysis and presentation of the dataset.
+        <strong>“Visualising Notated Music Metadata from the Latvian National Bibliography”</strong>
+        (RTU Digital Humanities programme, RHMDB). The visualizations are based on bibliographic metadata from the
+        National Library of Latvia and are intended to support exploratory analysis and presentation of the dataset.
       </p>
 
-      <p class="hint">Author: Marta Elizabete Kivkule · Master’s Thesis · Riga Technical University</p>
+      <p class="hint">Author: Marta Elizabete Kivkule · Riga Technical University · Digital Humanities (RHMDB)</p>
 
       <div class="actions">
         <a class="btn primary" href="timeline_publications_per_year.html">Start with timeline <small>→</small></a>
         <a class="btn" href="author_work_network.html">Open author–work network <small>↗</small></a>
         <a class="btn" href="assets/missing_fields_all_records.png">Data quality snapshot <small>↗</small></a>
       </div>
+
+      <div class="toolbar">
+        <div class="search" role="search" aria-label="Filter visualizations">
+          🔎 <input id="q" type="search" placeholder="Search visualizations (e.g., 048, publisher, translation, 008)…" />
+        </div>
+        <div class="pill" id="countPill">0 visualizations</div>
+      </div>
     </header>
 
     <div class="grid">
-      <section class="section" aria-labelledby="time">
-        <div class="section-header">
-          <h2 id="time">Time</h2>
-          <p class="hint">Temporal trends in publishing volume and language composition.</p>
-        </div>
-        <div class="cards">
-          <a class="card" href="timeline_publications_per_year.html">
-            <div class="title-row">
-              <div class="icon">⏳</div>
-              <p class="card-title">Publications per year</p>
-            </div>
-            <p class="desc">Yearly publishing volume to spot peaks, gaps, and historical phases.</p>
-          </a>
+      <section class="section" aria-labelledby="catalog">
+        <h2 id="catalog" style="margin:0 0 10px; color: var(--accent2);">Catalogue</h2>
+        <p class="group-desc" style="margin-left:0;">
+          Browse by topic. Sections can be expanded/collapsed. Use the search field to quickly locate a chart.
+        </p>
 
-          <a class="card" href="language_composition_over_time.html">
-            <div class="title-row">
-              <div class="icon">🌍</div>
-              <p class="card-title">Language composition over time</p>
-            </div>
-            <p class="desc">Share of languages across time; useful for period comparisons.</p>
-          </a>
-        </div>
-      </section>
+        <!-- Time & overview -->
+        <details open>
+          <summary>
+            <span>Time & overview</span>
+            <span class="summary-right">Trends across years</span>
+          </summary>
+          <p class="group-desc">Publishing volume and language composition over time.</p>
+          <div class="cards">
+            <a class="card viz" data-tags="time timeline publications year" href="timeline_publications_per_year.html">
+              <div class="title-row"><div class="icon">⏳</div><p class="card-title">Publications per year</p></div>
+              <p class="desc">Yearly publishing volume to spot peaks, gaps, and historical phases.</p>
+            </a>
 
-      <section class="section" aria-labelledby="language">
-        <div class="section-header">
-          <h2 id="language">Language</h2>
-          <p class="hint">Distribution of languages across the dataset.</p>
-        </div>
-        <div class="cards">
-          <a class="card" href="languages_all.html">
-            <div class="title-row">
-              <div class="icon">🈯</div>
-              <p class="card-title">All languages</p>
-            </div>
-            <p class="desc">Full list of languages present in the dataset.</p>
-          </a>
+            <a class="card viz" data-tags="time language composition over time" href="language_composition_over_time.html">
+              <div class="title-row"><div class="icon">🌍</div><p class="card-title">Language composition over time</p></div>
+              <p class="desc">Share of languages across time; useful for period comparisons.</p>
+            </a>
+          </div>
+        </details>
 
-          <a class="card" href="languages_top10_other.html">
-            <div class="title-row">
-              <div class="icon">🏷️</div>
-              <p class="card-title">Top 10 + Other</p>
-            </div>
-            <p class="desc">Top languages grouped for easier reading and comparison.</p>
-          </a>
-        </div>
-      </section>
+        <!-- Language -->
+        <details>
+          <summary>
+            <span>Language</span>
+            <span class="summary-right">Distribution</span>
+          </summary>
+          <p class="group-desc">Overall language distribution and simplified top-language view.</p>
+          <div class="cards">
+            <a class="card viz" data-tags="language all distribution" href="languages_all.html">
+              <div class="title-row"><div class="icon">🈯</div><p class="card-title">All languages</p></div>
+              <p class="desc">Full list of languages present in the dataset.</p>
+            </a>
 
-      <section class="section" aria-labelledby="publishers">
-        <div class="section-header">
-          <h2 id="publishers">Publishers</h2>
-          <p class="hint">Publisher activity over time and relationships with music formats.</p>
-        </div>
-        <div class="cards">
-          <a class="card" href="publishers_by_era_heatmap.html">
-            <div class="title-row">
-              <div class="icon">🏛️</div>
-              <p class="card-title">Publisher activity by period</p>
-            </div>
-            <p class="desc">Heatmap view to highlight active publishers in different eras.</p>
-          </a>
+            <a class="card viz" data-tags="language top10 other distribution" href="languages_top10_other.html">
+              <div class="title-row"><div class="icon">🏷️</div><p class="card-title">Top 10 + Other</p></div>
+              <p class="desc">Top languages grouped for easier reading and comparison.</p>
+            </a>
 
-          <a class="card" href="publisher_vs_music_format.html">
-            <div class="title-row">
-              <div class="icon">📦</div>
-              <p class="card-title">Publishers vs music format</p>
-            </div>
-            <p class="desc">Which publishers dominate which notated music formats.</p>
-          </a>
-        </div>
-      </section>
+            <a class="card viz" data-tags="041 translation language text" href="language_code_text.html">
+              <div class="title-row"><div class="icon">📝</div><p class="card-title">Language code of text/sound track (041$a)</p></div>
+              <p class="desc">Language codes describing text/soundtrack or separate titles.</p>
+            </a>
 
-      <section class="section" aria-labelledby="networks">
-        <div class="section-header">
-          <h2 id="networks">Networks &amp; maps</h2>
-          <p class="hint">Relationship views and geography-based exploration.</p>
-        </div>
-        <div class="cards">
-          <a class="card" href="author_work_network.html">
-            <div class="title-row">
-              <div class="icon">🕸️</div>
-              <p class="card-title">Author–work network</p>
-            </div>
-            <p class="desc">Interactive network to explore connections between authors and works.</p>
-          </a>
+            <a class="card viz" data-tags="041 librettos language" href="language_code_librettos.html">
+              <div class="title-row"><div class="icon">📄</div><p class="card-title">Language code of librettos (041$e)</p></div>
+              <p class="desc">Language codes for librettos in notated music records.</p>
+            </a>
 
-          <a class="card" href="publication_places_map.html">
-            <div class="title-row">
-              <div class="icon">🗺️</div>
-              <p class="card-title">Publication places map</p>
-            </div>
-            <p class="desc">Map of publication places to show geographic distribution.</p>
-          </a>
-        </div>
-      </section>
+            <a class="card viz" data-tags="041 original language" href="language_code_original.html">
+              <div class="title-row"><div class="icon">🏁</div><p class="card-title">Language code of original (041$h)</p></div>
+              <p class="desc">Language of the original work.</p>
+            </a>
 
-      <section class="section" aria-labelledby="quality">
-        <div class="section-header">
-          <h2 id="quality">Data quality</h2>
-          <p class="hint">Completeness overview and missing-field patterns.</p>
-        </div>
-        <div class="cards">
-          <a class="card" href="assets/missing_fields_all_records.png">
-            <div class="title-row">
-              <div class="icon">🧪</div>
-              <p class="card-title">Missing fields (all records)</p>
-            </div>
-            <p class="desc">Completeness overview across the full dataset.</p>
-          </a>
+            <a class="card viz" data-tags="translation directions heatmap 041" href="Translation_Directions_in_Notated_Music.html">
+              <div class="title-row"><div class="icon">↔️</div><p class="card-title">Translation directions (heatmap)</p></div>
+              <p class="desc">Original language vs. material language relationships.</p>
+            </a>
+          </div>
+        </details>
 
-          <a class="card" href="assets/missing_fields_sample_records.png">
-            <div class="title-row">
-              <div class="icon">🔍</div>
-              <p class="card-title">Missing fields (sample)</p>
-            </div>
-            <p class="desc">Focused view for a sample subset to compare patterns.</p>
-          </a>
-        </div>
+        <!-- Notated music specific fields -->
+        <details>
+          <summary>
+            <span>Notated music specific fields</span>
+            <span class="summary-right">MARC 008 / 048</span>
+          </summary>
+          <p class="group-desc">Notated-music codes and instrument groups (MARC 008 and 048).</p>
+          <div class="cards">
+            <a class="card viz" data-tags="008 form of item 008/23" href="distribution_of_form_of_item.html">
+              <div class="title-row"><div class="icon">📦</div><p class="card-title">Distribution of Form of Item (008/23)</p></div>
+              <p class="desc">Form-of-item codes in notated music records.</p>
+            </a>
+
+            <a class="card viz" data-tags="008 target audience 008/22" href="target_audience_codes.html">
+              <div class="title-row"><div class="icon">🎯</div><p class="card-title">Target audience codes (008/22)</p></div>
+              <p class="desc">Target audience distribution for notated music.</p>
+            </a>
+
+            <a class="card viz" data-tags="008 music parts 008/21" href="music_parts.html">
+              <div class="title-row"><div class="icon">🎼</div><p class="card-title">Music parts information (008/21)</p></div>
+              <p class="desc">Information about parts in notated music records.</p>
+            </a>
+
+            <a class="card viz" data-tags="008 composition format 008/18 008/19" href="composition_format.html">
+              <div class="title-row"><div class="icon">🧩</div><p class="card-title">All composition format codes (008/18–19)</p></div>
+              <p class="desc">Full distribution of composition format codes.</p>
+            </a>
+
+            <a class="card viz" data-tags="008 composition format top10" href="top_10composition_format.html">
+              <div class="title-row"><div class="icon">🔟</div><p class="card-title">Top 10 composition format codes</p></div>
+              <p class="desc">Most frequent composition formats.</p>
+            </a>
+
+            <a class="card viz" data-tags="008 composition format last10" href="last_10composition_format.html">
+              <div class="title-row"><div class="icon">📉</div><p class="card-title">Last 10 composition format codes</p></div>
+              <p class="desc">Least frequent composition formats.</p>
+            </a>
+
+            <a class="card viz" data-tags="008 music format 008/20" href="music_format.html">
+              <div class="title-row"><div class="icon">🗂️</div><p class="card-title">Music format (008/20)</p></div>
+              <p class="desc">Music format codes for notated music.</p>
+            </a>
+
+            <a class="card viz" data-tags="048 ensemble instruments" href="instrument_group_ensambles.html">
+              <div class="title-row"><div class="icon">👥</div><p class="card-title">Ensemble groups (048$a)</p></div>
+              <p class="desc">Ensemble instrument group distribution.</p>
+            </a>
+
+            <a class="card viz" data-tags="048 solo instruments voices" href="instrument_group_solo.html">
+              <div class="title-row"><div class="icon">🧑‍🎤</div><p class="card-title">Solo instruments/voices (048$b)</p></div>
+              <p class="desc">Solo instrument/voice group distribution.</p>
+            </a>
+
+            <a class="card viz" data-tags="048 ensemble over time area chart" href="instrument_group_ensambles_over_time.html">
+              <div class="title-row"><div class="icon">📈</div><p class="card-title">Ensemble groups over time</p></div>
+              <p class="desc">Normalized share per year (area chart).</p>
+            </a>
+
+            <a class="card viz" data-tags="048 solo over time area chart" href="instrument_group_solo_over_time.html">
+              <div class="title-row"><div class="icon">📈</div><p class="card-title">Solo instruments/voices over time</p></div>
+              <p class="desc">Normalized share per year (area chart).</p>
+            </a>
+          </div>
+        </details>
+
+        <!-- Publishers -->
+        <details>
+          <summary>
+            <span>Publishers</span>
+            <span class="summary-right">Activity & formats</span>
+          </summary>
+          <p class="group-desc">Publisher activity by period and publisher–format relationships.</p>
+          <div class="cards">
+            <a class="card viz" data-tags="publishers activity heatmap period" href="publishers_by_era_heatmap.html">
+              <div class="title-row"><div class="icon">🏛️</div><p class="card-title">Publisher activity by period</p></div>
+              <p class="desc">Heatmap highlighting active publishers across eras.</p>
+            </a>
+
+            <a class="card viz" data-tags="publishers format" href="publisher_vs_music_format.html">
+              <div class="title-row"><div class="icon">📦</div><p class="card-title">Publishers vs music format</p></div>
+              <p class="desc">Which publishers dominate which notated music formats.</p>
+            </a>
+
+            <a class="card viz" data-tags="publishers composition format heatmap" href="publisher_vs_composition_format.html">
+              <div class="title-row"><div class="icon">🔥</div><p class="card-title">Top 30 publishers vs composition formats</p></div>
+              <p class="desc">Heatmap of publishers by composition format.</p>
+            </a>
+          </div>
+        </details>
+
+        <!-- Cataloguing agencies (040) -->
+        <details>
+          <summary>
+            <span>Cataloguing agencies (MARC 040)</span>
+            <span class="summary-right">Agencies & RDA</span>
+          </summary>
+          <p class="group-desc">Original and modifying agencies, plus RDA usage and agency relationships.</p>
+          <div class="cards">
+            <a class="card viz" data-tags="040 original agency 040a" href="original_cataloguing_agencies.html">
+              <div class="title-row"><div class="icon">🏷️</div><p class="card-title">Original cataloguing agencies (040$a)</p></div>
+              <p class="desc">Distribution of original cataloguing agencies.</p>
+            </a>
+
+            <a class="card viz" data-tags="040 modifying agency 040d" href="modifying_cataloguing_agencies.html">
+              <div class="title-row"><div class="icon">🛠️</div><p class="card-title">Modifying agencies (040$d)</p></div>
+              <p class="desc">Agencies recorded as modifiers of cataloguing data.</p>
+            </a>
+
+            <a class="card viz" data-tags="040 rda 040e pie chart" href="RDA.html">
+              <div class="title-row"><div class="icon">📌</div><p class="card-title">RDA usage (040$e)</p></div>
+              <p class="desc">RDA-related coding as recorded in MARC 040.</p>
+            </a>
+
+            <a class="card viz" data-tags="040 heatmap agency relationship" href="Original_Agency_vs_Modifying_Agency.html">
+              <div class="title-row"><div class="icon">🧭</div><p class="card-title">Original vs modifying agency (heatmap)</p></div>
+              <p class="desc">Relationship between original and modifying agencies.</p>
+            </a>
+          </div>
+        </details>
+
+        <!-- Contributors & responsibilities -->
+        <details>
+          <summary>
+            <span>Contributors & responsibilities</span>
+            <span class="summary-right">People, roles, subjects</span>
+          </summary>
+          <p class="group-desc">Frequent persons, responsibility roles, and subject terms.</p>
+          <div class="cards">
+            <a class="card viz" data-tags="persons top30 contributors" href="top_30_persons.html">
+              <div class="title-row"><div class="icon">👤</div><p class="card-title">Top 30 persons</p></div>
+              <p class="desc">Most frequently mentioned persons in notated music records.</p>
+            </a>
+
+            <a class="card viz" data-tags="roles responsibilities persons" href="role_composition_persons.html">
+              <div class="title-row"><div class="icon">🎭</div><p class="card-title">Role composition of top persons</p></div>
+              <p class="desc">Role distribution for top 50 persons.</p>
+            </a>
+
+            <a class="card viz" data-tags="subjects top30" href="top_30_subjects.html">
+              <div class="title-row"><div class="icon">🏷️</div><p class="card-title">Top 30 subject terms</p></div>
+              <p class="desc">Most common subject terms in Latvian notated music records.</p>
+            </a>
+
+            <a class="card viz" data-tags="subjects treemap top50" href="top_50_subjects_treemap.html">
+              <div class="title-row"><div class="icon">🧩</div><p class="card-title">Top 50 subjects (treemap)</p></div>
+              <p class="desc">Treemap view of most common subject terms.</p>
+            </a>
+          </div>
+        </details>
+
+        <!-- Networks & maps -->
+        <details>
+          <summary>
+            <span>Networks & maps</span>
+            <span class="summary-right">Relations & places</span>
+          </summary>
+          <p class="group-desc">Interactive network and geographic distribution.</p>
+          <div class="cards">
+            <a class="card viz" data-tags="network author work" href="author_work_network.html">
+              <div class="title-row"><div class="icon">🕸️</div><p class="card-title">Author–work network</p></div>
+              <p class="desc">Explore connections between authors and works.</p>
+            </a>
+
+            <a class="card viz" data-tags="map publication places geography" href="publication_places_map.html">
+              <div class="title-row"><div class="icon">🗺️</div><p class="card-title">Publication places map</p></div>
+              <p class="desc">Geographic distribution of publication places.</p>
+            </a>
+          </div>
+        </details>
+
+        <!-- Metadata quality -->
+        <details>
+          <summary>
+            <span>Metadata quality</span>
+            <span class="summary-right">Completeness & richness</span>
+          </summary>
+          <p class="group-desc">Indicators of completeness and descriptive richness over time.</p>
+          <div class="cards">
+            <a class="card viz" data-tags="metadata richness over time line chart" href="metadata_richness_over_time.html">
+              <div class="title-row"><div class="icon">📊</div><p class="card-title">Metadata richness over time</p></div>
+              <p class="desc">Metadatu bagātība bibliogrāfiskajos ierakstos pēc ieraksta izveides gada.</p>
+            </a>
+
+            <a class="card viz" data-tags="field usage per record completeness bar chart" href="Field_Usage_per_Record.html">
+              <div class="title-row"><div class="icon">🧾</div><p class="card-title">Field usage per record</p></div>
+              <p class="desc">% of records containing each field (overview of usage).</p>
+            </a>
+
+            <a class="card viz" data-tags="missing fields data quality" href="assets/missing_fields_all_records.png">
+              <div class="title-row"><div class="icon">🧪</div><p class="card-title">Missing fields (all records)</p></div>
+              <p class="desc">Missing-field overview across the full dataset.</p>
+            </a>
+
+            <a class="card viz" data-tags="missing fields sample data quality" href="assets/missing_fields_sample_records.png">
+              <div class="title-row"><div class="icon">🔍</div><p class="card-title">Missing fields (sample)</p></div>
+              <p class="desc">Missing-field overview for a sample subset.</p>
+            </a>
+          </div>
+        </details>
       </section>
     </div>
 
@@ -450,9 +567,33 @@
       <div>
         Data source: National Library of Latvia bibliographic metadata (notated music).
         <span class="sep">•</span>
-        <a href="README.md">Project notes</a>
+        <a href="README.md">Repository notes</a>
       </div>
     </footer>
   </div>
+
+  <script>
+    // Simple client-side filter (no dependencies)
+    const q = document.getElementById('q');
+    const cards = Array.from(document.querySelectorAll('.viz'));
+    const countPill = document.getElementById('countPill');
+
+    function updateCount(){
+      const visible = cards.filter(c => c.style.display !== 'none').length;
+      countPill.textContent = `${visible} visualization${visible === 1 ? '' : 's'}`;
+    }
+
+    function filter(){
+      const term = (q.value || '').trim().toLowerCase();
+      cards.forEach(card => {
+        const hay = (card.textContent + ' ' + (card.dataset.tags || '')).toLowerCase();
+        card.style.display = hay.includes(term) ? '' : 'none';
+      });
+      updateCount();
+    }
+
+    q.addEventListener('input', filter);
+    updateCount();
+  </script>
 </body>
 </html>
