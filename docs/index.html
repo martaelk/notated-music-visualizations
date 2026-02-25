@@ -4,87 +4,117 @@
   <meta charset="utf-8" />
   <title>Latvia National Bibliography – Notated Music</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Interactive visualizations based on National Library of Latvia metadata (Notated Music)." />
+  <meta name="description" content="Interactive visualizations developed as part of a Master’s thesis (Notated Music metadata, National Library of Latvia)." />
 
   <style>
     :root{
       --bg: #f6f7f9;
       --panel: #ffffff;
-      --panel-2: #f1f3f5;
-      --text: #1f2933;
-      --muted: #4b5563;
+      --panel-2: #f3f4f6;
+      --text: #111827;
+      --muted: #374151;
       --muted2: #6b7280;
       --border: #d1d5db;
       --accent: #2563eb;   /* academic blue */
-      --accent2: #64748b;  /* neutral slate */
-      --shadow: 0 6px 20px rgba(0,0,0,0.06);
-      --radius: 14px;
-      --radius2: 12px;
+      --accent2: #0f172a;  /* deep slate for headings */
+      --shadow: 0 8px 24px rgba(0,0,0,0.08);
+      --radius: 16px;
+      --radius2: 14px;
     }
 
     * { box-sizing: border-box; }
+
     body{
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
-      background: linear-gradient(180deg, #ffffff 0%, #f6f7f9 100%);
+      background: linear-gradient(180deg, #ffffff 0%, var(--bg) 100%);
       min-height: 100vh;
-      line-height: 1.45;
+      line-height: 1.55;
     }
 
     a{ color: inherit; text-decoration: none; }
-    a:focus-visible{ outline: 3px solid rgba(125,211,252,0.6); outline-offset: 3px; border-radius: 10px; }
+    a:focus-visible{
+      outline: 3px solid color-mix(in srgb, var(--accent) 40%, transparent);
+      outline-offset: 3px;
+      border-radius: 12px;
+    }
 
     .wrap{
       max-width: 1100px;
       margin: 0 auto;
-      padding: 44px 20px 60px;
+      padding: 40px 20px 60px;
     }
 
     /* Header / hero */
     header{
+      position: relative;
+      border-radius: var(--radius);
       background: var(--panel);
       border: 1px solid var(--border);
       box-shadow: var(--shadow);
+      padding: 22px 24px 20px;
+      overflow: hidden;
     }
+
     header:before{
       content:"";
       position:absolute;
-      inset:-40px -60px auto auto;
-      width: 300px; height: 300px;
-      background: radial-gradient(circle at 30% 30%, rgba(125,211,252,0.35), transparent 60%);
+      inset:-80px -120px auto auto;
+      width: 360px; height: 360px;
+      background: radial-gradient(circle at 30% 30%, rgba(37,99,235,0.14), transparent 62%);
       transform: rotate(10deg);
       pointer-events:none;
       filter: blur(2px);
     }
+
     .topline{
       display:flex;
       align-items:center;
       justify-content:space-between;
-      gap: 14px;
+      gap: 12px;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
+
     .badge{
       display:inline-flex;
       align-items:center;
       gap: 8px;
       font-size: 13px;
       color: var(--muted);
-      padding: 8px 12px;
+      padding: 7px 11px;
       border-radius: 999px;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
+      background: var(--panel-2);
+      white-space: nowrap;
     }
+
     h1{
-      margin: 10px 0 6px;
-      font-size: clamp(26px, 3.6vw, 40px);
+      margin: 14px 0 8px;
+      font-size: clamp(28px, 3.6vw, 42px);
       letter-spacing: -0.02em;
+      color: var(--accent2);
+      position: relative;
+      z-index: 1;
     }
+
     .subtitle{
       margin: 0;
       color: var(--muted);
-      max-width: 72ch;
+      max-width: 80ch;
       font-size: 15.5px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hint{
+      color: var(--muted2);
+      font-size: 13px;
+      margin: 10px 0 0;
+      position: relative;
+      z-index: 1;
     }
 
     .actions{
@@ -92,7 +122,10 @@
       display:flex;
       gap: 10px;
       flex-wrap: wrap;
+      position: relative;
+      z-index: 1;
     }
+
     .btn{
       display:inline-flex;
       align-items:center;
@@ -100,26 +133,38 @@
       padding: 10px 14px;
       border-radius: 12px;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
+      background: var(--panel);
       color: var(--text);
-      font-weight: 600;
+      font-weight: 650;
       font-size: 14px;
-      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+      box-shadow: 0 1px 0 rgba(0,0,0,0.02);
+      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease, background 150ms ease;
     }
+
     .btn:hover{
       transform: translateY(-1px);
-      background: rgba(255,255,255,0.08);
-      border-color: rgba(125,211,252,0.35);
+      border-color: color-mix(in srgb, var(--accent) 35%, var(--border));
+      box-shadow: 0 10px 18px rgba(0,0,0,0.06);
     }
+
     .btn.primary{
-    background: var(--accent);
-    color: #ffffff;
-  }
-    .btn small{ color: var(--muted2); font-weight: 500; }
+      background: var(--accent);
+      color: #ffffff;
+      border-color: color-mix(in srgb, var(--accent) 75%, #000 0%);
+    }
+
+    .btn.primary:hover{
+      box-shadow: 0 12px 22px rgba(37,99,235,0.18);
+    }
+
+    .btn small{
+      color: color-mix(in srgb, currentColor 72%, transparent);
+      font-weight: 600;
+    }
 
     /* Sections */
     .grid{
-      margin-top: 22px;
+      margin-top: 18px;
       display:grid;
       grid-template-columns: repeat(12, 1fr);
       gap: 14px;
@@ -128,8 +173,8 @@
     .section{
       grid-column: span 12;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.04);
-      box-shadow: var(--shadow);
+      background: var(--panel);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
       border-radius: var(--radius);
       padding: 18px;
     }
@@ -142,15 +187,12 @@
       flex-wrap: wrap;
       margin-bottom: 12px;
     }
+
     h2{
       margin: 0;
       font-size: 18px;
       letter-spacing: -0.01em;
-    }
-    .hint{
-      color: var(--muted2);
-      font-size: 13px;
-      margin: 0;
+      color: var(--accent2);
     }
 
     .cards{
@@ -158,23 +200,33 @@
       grid-template-columns: repeat(12, 1fr);
       gap: 12px;
     }
+
     .card{
-      background: var(--panel);
+      position: relative;
+      grid-column: span 12;
+      padding: 14px 14px 14px;
+      border-radius: var(--radius2);
+      background: linear-gradient(180deg, #ffffff, #ffffff);
       border: 1px solid var(--border);
-      box-shadow: var(--shadow);
+      box-shadow: 0 4px 14px rgba(0,0,0,0.04);
+      transition: transform 150ms ease, border-color 150ms ease, box-shadow 150ms ease;
+      overflow: hidden;
     }
+
     .card:hover{
       transform: translateY(-2px);
-      border-color: var(--accent);
+      border-color: color-mix(in srgb, var(--accent) 40%, var(--border));
+      box-shadow: 0 12px 22px rgba(0,0,0,0.08);
     }
-    .card:after{
-      content:"";
+
+    /* subtle clickable cue */
+    .card::after{
+      content:"→";
       position:absolute;
-      inset: auto -60px -80px auto;
-      width: 180px; height: 180px;
-      background: radial-gradient(circle at 30% 30%, rgba(167,139,250,0.20), transparent 60%);
-      pointer-events:none;
-      filter: blur(1px);
+      right: 14px;
+      bottom: 12px;
+      color: var(--muted2);
+      font-size: 16px;
     }
 
     .title-row{
@@ -182,7 +234,9 @@
       gap: 10px;
       align-items: center;
       margin-bottom: 6px;
+      padding-right: 18px; /* room for arrow */
     }
+
     .icon{
       width: 34px;
       height: 34px;
@@ -190,15 +244,19 @@
       display:grid;
       place-items:center;
       border: 1px solid var(--border);
-      background: rgba(255,255,255,0.05);
+      background: var(--panel-2);
       flex: 0 0 auto;
+      opacity: 0.9;
     }
+
     .card-title{
       margin: 0;
       font-weight: 750;
       letter-spacing: -0.01em;
       font-size: 15px;
+      color: var(--accent2);
     }
+
     .desc{
       margin: 0;
       color: var(--muted);
@@ -206,11 +264,12 @@
       max-width: 80ch;
     }
 
-    /* Two columns on wider screens */
+    /* Layout breakpoints */
     @media (min-width: 720px){
       .section{ padding: 20px; }
       .card{ grid-column: span 6; }
     }
+
     @media (min-width: 980px){
       .card{ grid-column: span 4; }
     }
@@ -219,17 +278,18 @@
       margin-top: 18px;
       color: var(--muted2);
       font-size: 13px;
-      padding: 14px 4px 0;
+      padding: 10px 2px 0;
     }
+
     footer a{
       color: var(--muted);
       text-decoration: underline;
-      text-decoration-color: rgba(125,211,252,0.35);
       text-underline-offset: 3px;
+      text-decoration-color: color-mix(in srgb, var(--accent) 40%, transparent);
     }
-    .sep{ opacity: 0.5; margin: 0 8px; }
 
-    /* Optional: reduce motion */
+    .sep{ opacity: 0.6; margin: 0 8px; }
+
     @media (prefers-reduced-motion: reduce){
       .card, .btn{ transition: none; }
       .card:hover, .btn:hover{ transform: none; }
@@ -246,15 +306,16 @@
       </div>
 
       <h1>Interactive visualizations</h1>
-      <p class="subtitle">This page presents interactive visualizations developed as part of the Master’s thesis
+
+      <p class="subtitle">
+        This page presents interactive visualizations developed as part of the Master’s thesis
         <strong>“Visualising Notated Music Metadata from the Latvian National Bibliography”</strong>,
         conducted within the RTU Digital Humanities programme (RHMDB).
         The visualizations are based on bibliographic metadata from the National Library of Latvia
         and are intended to support exploratory analysis and presentation of the dataset.
       </p>
-      
-      <p class="hint">Author: Marta Elizabete Kivkule · Master’s Thesis · Riga Technical University
-      </p>
+
+      <p class="hint">Author: Marta Elizabete Kivkule · Master’s Thesis · Riga Technical University</p>
 
       <div class="actions">
         <a class="btn primary" href="timeline_publications_per_year.html">Start with timeline <small>→</small></a>
@@ -264,11 +325,10 @@
     </header>
 
     <div class="grid">
-      <!-- Time -->
       <section class="section" aria-labelledby="time">
         <div class="section-header">
           <h2 id="time">Time</h2>
-          <p class="hint">How publishing volume and language composition change across years.</p>
+          <p class="hint">Temporal trends in publishing volume and language composition.</p>
         </div>
         <div class="cards">
           <a class="card" href="timeline_publications_per_year.html">
@@ -289,11 +349,10 @@
         </div>
       </section>
 
-      <!-- Language -->
       <section class="section" aria-labelledby="language">
         <div class="section-header">
           <h2 id="language">Language</h2>
-          <p class="hint">Overall language distribution (all values vs. top languages).</p>
+          <p class="hint">Distribution of languages across the dataset.</p>
         </div>
         <div class="cards">
           <a class="card" href="languages_all.html">
@@ -314,11 +373,10 @@
         </div>
       </section>
 
-      <!-- Publishers -->
       <section class="section" aria-labelledby="publishers">
         <div class="section-header">
           <h2 id="publishers">Publishers</h2>
-          <p class="hint">Publisher activity by period and publisher–format relationships.</p>
+          <p class="hint">Publisher activity over time and relationships with music formats.</p>
         </div>
         <div class="cards">
           <a class="card" href="publishers_by_era_heatmap.html">
@@ -339,7 +397,6 @@
         </div>
       </section>
 
-      <!-- Networks & Maps -->
       <section class="section" aria-labelledby="networks">
         <div class="section-header">
           <h2 id="networks">Networks &amp; maps</h2>
@@ -364,11 +421,10 @@
         </div>
       </section>
 
-      <!-- Data quality -->
       <section class="section" aria-labelledby="quality">
         <div class="section-header">
           <h2 id="quality">Data quality</h2>
-          <p class="hint">Quick overview of missing fields and completeness issues.</p>
+          <p class="hint">Completeness overview and missing-field patterns.</p>
         </div>
         <div class="cards">
           <a class="card" href="assets/missing_fields_all_records.png">
