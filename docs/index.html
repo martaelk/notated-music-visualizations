@@ -8,18 +8,18 @@
 
   <style>
     :root{
-      --bg: #0b1020;
-      --panel: rgba(255,255,255,0.06);
-      --panel-2: rgba(255,255,255,0.09);
-      --text: rgba(255,255,255,0.92);
-      --muted: rgba(255,255,255,0.72);
-      --muted2: rgba(255,255,255,0.58);
-      --border: rgba(255,255,255,0.12);
-      --accent: #7dd3fc;     /* light cyan */
-      --accent2: #a78bfa;    /* soft purple */
-      --shadow: 0 10px 30px rgba(0,0,0,0.25);
-      --radius: 16px;
-      --radius2: 14px;
+      --bg: #f6f7f9;
+      --panel: #ffffff;
+      --panel-2: #f1f3f5;
+      --text: #1f2933;
+      --muted: #4b5563;
+      --muted2: #6b7280;
+      --border: #d1d5db;
+      --accent: #2563eb;   /* academic blue */
+      --accent2: #64748b;  /* neutral slate */
+      --shadow: 0 6px 20px rgba(0,0,0,0.06);
+      --radius: 14px;
+      --radius2: 12px;
     }
 
     * { box-sizing: border-box; }
@@ -27,10 +27,7 @@
       margin: 0;
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
       color: var(--text);
-      background:
-        radial-gradient(900px 500px at 15% 10%, rgba(125,211,252,0.22), transparent 60%),
-        radial-gradient(800px 500px at 90% 15%, rgba(167,139,250,0.18), transparent 55%),
-        linear-gradient(180deg, #070a14 0%, #0b1020 55%, #060815 100%);
+      background: linear-gradient(180deg, #ffffff 0%, #f6f7f9 100%);
       min-height: 100vh;
       line-height: 1.45;
     }
@@ -46,13 +43,9 @@
 
     /* Header / hero */
     header{
+      background: var(--panel);
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
       box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      padding: 26px 26px 22px;
-      position: relative;
-      overflow: hidden;
     }
     header:before{
       content:"";
@@ -119,9 +112,9 @@
       border-color: rgba(125,211,252,0.35);
     }
     .btn.primary{
-      background: linear-gradient(135deg, rgba(125,211,252,0.22), rgba(167,139,250,0.18));
-      border-color: rgba(125,211,252,0.35);
-    }
+    background: var(--accent);
+    color: #ffffff;
+  }
     .btn small{ color: var(--muted2); font-weight: 500; }
 
     /* Sections */
@@ -166,19 +159,13 @@
       gap: 12px;
     }
     .card{
-      grid-column: span 12;
+      background: var(--panel);
       border: 1px solid var(--border);
-      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
-      border-radius: var(--radius2);
-      padding: 14px 14px 13px;
-      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
-      position: relative;
-      overflow: hidden;
+      box-shadow: var(--shadow);
     }
     .card:hover{
       transform: translateY(-2px);
-      border-color: rgba(255,255,255,0.22);
-      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+      border-color: var(--accent);
     }
     .card:after{
       content:"";
@@ -259,10 +246,14 @@
       </div>
 
       <h1>Interactive visualizations</h1>
-      <p class="subtitle">
-        A small dashboard of interactive charts built from National Library of Latvia bibliographic metadata
-        (notated music). Use the sections below to explore time trends, language distribution, publisher activity,
-        and networks.
+      <p class="subtitle">This page presents interactive visualizations developed as part of the Master’s thesis
+        <strong>“Visualising Notated Music Metadata from the Latvian National Bibliography”</strong>,
+        conducted within the RTU Digital Humanities programme (RHMDB).
+        The visualizations are based on bibliographic metadata from the National Library of Latvia
+        and are intended to support exploratory analysis and presentation of the dataset.
+      </p>
+      
+      <p class="hint">Author: Marta Elizabete Kivkule · Master’s Thesis · Riga Technical University
       </p>
 
       <div class="actions">
