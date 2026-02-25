@@ -1,60 +1,411 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
+  <meta charset="utf-8" />
   <title>Latvia National Bibliography – Notated Music</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Interactive visualizations based on National Library of Latvia metadata (Notated Music)." />
+
   <style>
-    body { font-family: system-ui, sans-serif; margin: 2rem; max-width: 1000px; }
-    h1 { margin-bottom: 0.3rem; }
-    .section { margin: 1.5rem 0; }
-    ul { line-height: 1.8; }
+    :root{
+      --bg: #0b1020;
+      --panel: rgba(255,255,255,0.06);
+      --panel-2: rgba(255,255,255,0.09);
+      --text: rgba(255,255,255,0.92);
+      --muted: rgba(255,255,255,0.72);
+      --muted2: rgba(255,255,255,0.58);
+      --border: rgba(255,255,255,0.12);
+      --accent: #7dd3fc;     /* light cyan */
+      --accent2: #a78bfa;    /* soft purple */
+      --shadow: 0 10px 30px rgba(0,0,0,0.25);
+      --radius: 16px;
+      --radius2: 14px;
+    }
+
+    * { box-sizing: border-box; }
+    body{
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background:
+        radial-gradient(900px 500px at 15% 10%, rgba(125,211,252,0.22), transparent 60%),
+        radial-gradient(800px 500px at 90% 15%, rgba(167,139,250,0.18), transparent 55%),
+        linear-gradient(180deg, #070a14 0%, #0b1020 55%, #060815 100%);
+      min-height: 100vh;
+      line-height: 1.45;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:focus-visible{ outline: 3px solid rgba(125,211,252,0.6); outline-offset: 3px; border-radius: 10px; }
+
+    .wrap{
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 44px 20px 60px;
+    }
+
+    /* Header / hero */
+    header{
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.03));
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 26px 26px 22px;
+      position: relative;
+      overflow: hidden;
+    }
+    header:before{
+      content:"";
+      position:absolute;
+      inset:-40px -60px auto auto;
+      width: 300px; height: 300px;
+      background: radial-gradient(circle at 30% 30%, rgba(125,211,252,0.35), transparent 60%);
+      transform: rotate(10deg);
+      pointer-events:none;
+      filter: blur(2px);
+    }
+    .topline{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 12px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+    }
+    h1{
+      margin: 10px 0 6px;
+      font-size: clamp(26px, 3.6vw, 40px);
+      letter-spacing: -0.02em;
+    }
+    .subtitle{
+      margin: 0;
+      color: var(--muted);
+      max-width: 72ch;
+      font-size: 15.5px;
+    }
+
+    .actions{
+      margin-top: 16px;
+      display:flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      gap: 10px;
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      color: var(--text);
+      font-weight: 600;
+      font-size: 14px;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+    }
+    .btn:hover{
+      transform: translateY(-1px);
+      background: rgba(255,255,255,0.08);
+      border-color: rgba(125,211,252,0.35);
+    }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(125,211,252,0.22), rgba(167,139,250,0.18));
+      border-color: rgba(125,211,252,0.35);
+    }
+    .btn small{ color: var(--muted2); font-weight: 500; }
+
+    /* Sections */
+    .grid{
+      margin-top: 22px;
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 14px;
+    }
+
+    .section{
+      grid-column: span 12;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04);
+      box-shadow: var(--shadow);
+      border-radius: var(--radius);
+      padding: 18px;
+    }
+
+    .section-header{
+      display:flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 12px;
+    }
+    h2{
+      margin: 0;
+      font-size: 18px;
+      letter-spacing: -0.01em;
+    }
+    .hint{
+      color: var(--muted2);
+      font-size: 13px;
+      margin: 0;
+    }
+
+    .cards{
+      display:grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 12px;
+    }
+    .card{
+      grid-column: span 12;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, rgba(255,255,255,0.05), rgba(255,255,255,0.03));
+      border-radius: var(--radius2);
+      padding: 14px 14px 13px;
+      transition: transform 150ms ease, background 150ms ease, border-color 150ms ease;
+      position: relative;
+      overflow: hidden;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,0.22);
+      background: linear-gradient(180deg, rgba(255,255,255,0.07), rgba(255,255,255,0.04));
+    }
+    .card:after{
+      content:"";
+      position:absolute;
+      inset: auto -60px -80px auto;
+      width: 180px; height: 180px;
+      background: radial-gradient(circle at 30% 30%, rgba(167,139,250,0.20), transparent 60%);
+      pointer-events:none;
+      filter: blur(1px);
+    }
+
+    .title-row{
+      display:flex;
+      gap: 10px;
+      align-items: center;
+      margin-bottom: 6px;
+    }
+    .icon{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display:grid;
+      place-items:center;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05);
+      flex: 0 0 auto;
+    }
+    .card-title{
+      margin: 0;
+      font-weight: 750;
+      letter-spacing: -0.01em;
+      font-size: 15px;
+    }
+    .desc{
+      margin: 0;
+      color: var(--muted);
+      font-size: 13.5px;
+      max-width: 80ch;
+    }
+
+    /* Two columns on wider screens */
+    @media (min-width: 720px){
+      .section{ padding: 20px; }
+      .card{ grid-column: span 6; }
+    }
+    @media (min-width: 980px){
+      .card{ grid-column: span 4; }
+    }
+
+    footer{
+      margin-top: 18px;
+      color: var(--muted2);
+      font-size: 13px;
+      padding: 14px 4px 0;
+    }
+    footer a{
+      color: var(--muted);
+      text-decoration: underline;
+      text-decoration-color: rgba(125,211,252,0.35);
+      text-underline-offset: 3px;
+    }
+    .sep{ opacity: 0.5; margin: 0 8px; }
+
+    /* Optional: reduce motion */
+    @media (prefers-reduced-motion: reduce){
+      .card, .btn{ transition: none; }
+      .card:hover, .btn:hover{ transform: none; }
+    }
   </style>
 </head>
+
 <body>
+  <div class="wrap">
+    <header>
+      <div class="topline">
+        <div class="badge">🎼 Latvia National Bibliography <span class="sep">•</span> Notated Music</div>
+        <div class="badge">GitHub Pages showcase</div>
+      </div>
 
-<h1>Latvia National Bibliography – Notated Music</h1>
-<p>Interactive visualizations based on National Library of Latvia metadata.</p>
+      <h1>Interactive visualizations</h1>
+      <p class="subtitle">
+        A small dashboard of interactive charts built from National Library of Latvia bibliographic metadata
+        (notated music). Use the sections below to explore time trends, language distribution, publisher activity,
+        and networks.
+      </p>
 
-<div class="section">
-  <h2>Time</h2>
-  <ul>
-    <li><a href="timeline_publications_per_year.html">Publications per year</a></li>
-    <li><a href="language_composition_over_time.html">Language composition over time</a></li>
-  </ul>
-</div>
+      <div class="actions">
+        <a class="btn primary" href="timeline_publications_per_year.html">Start with timeline <small>→</small></a>
+        <a class="btn" href="author_work_network.html">Open author–work network <small>↗</small></a>
+        <a class="btn" href="assets/missing_fields_all_records.png">Data quality snapshot <small>↗</small></a>
+      </div>
+    </header>
 
-<div class="section">
-  <h2>Language</h2>
-  <ul>
-    <li><a href="languages_all.html">All languages</a></li>
-    <li><a href="languages_top10_other.html">Top 10 languages + Other</a></li>
-  </ul>
-</div>
+    <div class="grid">
+      <!-- Time -->
+      <section class="section" aria-labelledby="time">
+        <div class="section-header">
+          <h2 id="time">Time</h2>
+          <p class="hint">How publishing volume and language composition change across years.</p>
+        </div>
+        <div class="cards">
+          <a class="card" href="timeline_publications_per_year.html">
+            <div class="title-row">
+              <div class="icon">⏳</div>
+              <p class="card-title">Publications per year</p>
+            </div>
+            <p class="desc">Yearly publishing volume to spot peaks, gaps, and historical phases.</p>
+          </a>
 
-<div class="section">
-  <h2>Publishers</h2>
-  <ul>
-    <li><a href="publishers_by_era_heatmap.html">Publisher activity by period</a></li>
-    <li><a href="publisher_vs_music_format.html">Publishers vs music format</a></li>
-  </ul>
-</div>
+          <a class="card" href="language_composition_over_time.html">
+            <div class="title-row">
+              <div class="icon">🌍</div>
+              <p class="card-title">Language composition over time</p>
+            </div>
+            <p class="desc">Share of languages across time; useful for period comparisons.</p>
+          </a>
+        </div>
+      </section>
 
-<div class="section">
-  <h2>Networks & Maps</h2>
-  <ul>
-    <li><a href="author_work_network.html">Author–work network</a></li>
-    <li><a href="publication_places_map.html">Publication places map</a></li>
-  </ul>
-</div>
+      <!-- Language -->
+      <section class="section" aria-labelledby="language">
+        <div class="section-header">
+          <h2 id="language">Language</h2>
+          <p class="hint">Overall language distribution (all values vs. top languages).</p>
+        </div>
+        <div class="cards">
+          <a class="card" href="languages_all.html">
+            <div class="title-row">
+              <div class="icon">🈯</div>
+              <p class="card-title">All languages</p>
+            </div>
+            <p class="desc">Full list of languages present in the dataset.</p>
+          </a>
 
-<div class="section">
-  <h2>Data quality</h2>
-  <ul>
-    <li><a href="assets/missing_fields_all_records.png">Missing fields (all records)</a></li>
-    <li><a href="assets/missing_fields_sample_records.png">Missing fields (sample)</a></li>
-  </ul>
-</div>
+          <a class="card" href="languages_top10_other.html">
+            <div class="title-row">
+              <div class="icon">🏷️</div>
+              <p class="card-title">Top 10 + Other</p>
+            </div>
+            <p class="desc">Top languages grouped for easier reading and comparison.</p>
+          </a>
+        </div>
+      </section>
 
+      <!-- Publishers -->
+      <section class="section" aria-labelledby="publishers">
+        <div class="section-header">
+          <h2 id="publishers">Publishers</h2>
+          <p class="hint">Publisher activity by period and publisher–format relationships.</p>
+        </div>
+        <div class="cards">
+          <a class="card" href="publishers_by_era_heatmap.html">
+            <div class="title-row">
+              <div class="icon">🏛️</div>
+              <p class="card-title">Publisher activity by period</p>
+            </div>
+            <p class="desc">Heatmap view to highlight active publishers in different eras.</p>
+          </a>
+
+          <a class="card" href="publisher_vs_music_format.html">
+            <div class="title-row">
+              <div class="icon">📦</div>
+              <p class="card-title">Publishers vs music format</p>
+            </div>
+            <p class="desc">Which publishers dominate which notated music formats.</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- Networks & Maps -->
+      <section class="section" aria-labelledby="networks">
+        <div class="section-header">
+          <h2 id="networks">Networks &amp; maps</h2>
+          <p class="hint">Relationship views and geography-based exploration.</p>
+        </div>
+        <div class="cards">
+          <a class="card" href="author_work_network.html">
+            <div class="title-row">
+              <div class="icon">🕸️</div>
+              <p class="card-title">Author–work network</p>
+            </div>
+            <p class="desc">Interactive network to explore connections between authors and works.</p>
+          </a>
+
+          <a class="card" href="publication_places_map.html">
+            <div class="title-row">
+              <div class="icon">🗺️</div>
+              <p class="card-title">Publication places map</p>
+            </div>
+            <p class="desc">Map of publication places to show geographic distribution.</p>
+          </a>
+        </div>
+      </section>
+
+      <!-- Data quality -->
+      <section class="section" aria-labelledby="quality">
+        <div class="section-header">
+          <h2 id="quality">Data quality</h2>
+          <p class="hint">Quick overview of missing fields and completeness issues.</p>
+        </div>
+        <div class="cards">
+          <a class="card" href="assets/missing_fields_all_records.png">
+            <div class="title-row">
+              <div class="icon">🧪</div>
+              <p class="card-title">Missing fields (all records)</p>
+            </div>
+            <p class="desc">Completeness overview across the full dataset.</p>
+          </a>
+
+          <a class="card" href="assets/missing_fields_sample_records.png">
+            <div class="title-row">
+              <div class="icon">🔍</div>
+              <p class="card-title">Missing fields (sample)</p>
+            </div>
+            <p class="desc">Focused view for a sample subset to compare patterns.</p>
+          </a>
+        </div>
+      </section>
+    </div>
+
+    <footer>
+      <div>
+        Data source: National Library of Latvia bibliographic metadata (notated music).
+        <span class="sep">•</span>
+        <a href="README.md">Project notes</a>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>
